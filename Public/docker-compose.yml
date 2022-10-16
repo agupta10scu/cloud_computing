@@ -1,0 +1,23 @@
+version: '3.9'
+
+services:
+  api:
+    build: ./api/ #Use build not image as we will be changing it by adding flask
+    hostname: api #Optional
+    volumes:
+      - ./api/code:/app
+    ports:
+    - "5000:5000"
+
+  consumer:
+    build: ./consumer/ #Use build not image as we will be changing it by adding flask
+    hostname: consumer #Optional
+    environment:
+      - API_HOST=API_HOST
+      - API_PORT=API_PORT
+      - API_ENDPOINT=API_ENDPOINT
+    volumes:
+      - ./consumer/code:/app
+    ports:
+    - "80:80"
+    
