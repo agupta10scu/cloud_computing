@@ -1,0 +1,35 @@
+#always check the version
+version: '3.9'
+
+#the name of the services is the name of the container
+services:
+  app:
+   build: .     # instead of running an image from scratch..find a dockerfile
+   hostname: app
+   environment:
+    - DB_HOSTNAME=db
+   command: python manage.py runserver 0.0.0.0:8000
+   volumes:
+    - ./app/app:/app
+   ports:
+    - "8000:8000"
+
+  db:
+    image: postgres:12.12
+    hostname: db
+    environment:
+     - POSTGRES_USER=root #${POSTGRES_USER}
+     - POSTGRES_PASSWORD=pass #{POSTGRES_PASSWORD}
+     - POSTGRES_DB=web #{POSTGRES_DB}
+    ports:
+     - "5432:5432"
+
+  dba:
+    image: dpage/pgadmin4
+    hostname: dba                                 #optional
+    environment: 
+     - PGADMIN_DEFAULT_EMAIL=${PGA_ADMIN_NAME}
+     - PGADMIN_DEFAULT_PASSWORD=${PGA_ADMIN_PASS}
+    ports:
+     - "81:80"
+
